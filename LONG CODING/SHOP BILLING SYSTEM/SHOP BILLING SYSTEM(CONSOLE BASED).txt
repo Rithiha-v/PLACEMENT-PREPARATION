@@ -1,0 +1,100 @@
+import java.util.*;
+
+class Product {
+    private int productid;
+    private String productname;
+    private boolean available;
+    private int price;
+
+    Product(int productid, String productname, boolean available, int price) {
+        this.productid = productid;
+        this.productname = productname;
+        this.available = available;
+        this.price = price;
+    }
+
+    
+    int getproductid() { return productid; }
+    String getproductname() { return productname; }
+    boolean getavailable() { return available; }
+    int getprice() { return price; }
+
+    
+    void displayproducts() {
+        System.out.println("ProductID: " + productid);
+        System.out.println("ProductName: " + productname);
+        System.out.println("Availability: " + available);
+        System.out.println("Price: Rs." + price);
+        System.out.println("");
+    }
+
+    
+    static void generatebill(ArrayList<Product> dis, Scanner s) {
+        System.out.println("Enter the ProductID:");
+        int id = s.nextInt();
+        System.out.println("Enter the Quantity:");
+        int qty = s.nextInt();
+
+        Product selected = null;
+        for (Product p : dis) {
+            if (p.getproductid() == id) {
+                selected = p;
+                break;
+            }
+        }
+
+        if (selected == null) {
+            System.out.println("Product not found!!!");
+            return;
+        }
+
+        if (!selected.getavailable()) {
+            System.out.println("Sorry, " + selected.getproductname() + " is not available.");
+            return;
+        }
+
+        int total = qty * selected.getprice();
+        System.out.println("Bill Generated:");
+        System.out.println("Product: " + selected.getproductname());
+        System.out.println("Quantity: " + qty);
+        System.out.println("Total Amount: Rs." + total);
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        ArrayList<Product> dis = new ArrayList<>();
+        dis.add(new Product(1, "Soap", true, 10));
+        dis.add(new Product(2, "Oil", true, 50));
+        dis.add(new Product(3, "Biscuit", true, 20));
+        dis.add(new Product(4, "Shampoo", true, 35));
+        dis.add(new Product(5, "Paste", true, 40));
+
+        Scanner s = new Scanner(System.in);
+        int n;
+        do {
+            System.out.println("Welcome to our Shop");
+            System.out.println("Enter 1: For Display");
+            System.out.println("Enter 2: To Generate Bill");
+            System.out.println("Enter 3: To Exit");
+            System.out.println("Enter your Choice:");
+            n = s.nextInt();
+
+            switch (n) {
+                case 1:
+                    for (Product p : dis) {
+                        p.displayproducts();
+                    }
+                    break;
+                case 2:
+                    Product.generatebill(dis, s);
+                    break;
+                case 3:
+                    System.out.println("Thank you for visiting!");
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        } while (n != 3);
+    }
+}
